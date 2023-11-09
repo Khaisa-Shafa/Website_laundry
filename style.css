@@ -12,11 +12,16 @@ body {
 .navbar {
   background-color: #f0e81e;
 }
+.navbar-brand {
+  font-weight: 600;
+}
 
 [type ="button"].btn {
   background: #55b084;
   color: #fff;
-  margin-left: 10px;
+  margin-left: 20px;
+  margin-right: 15px;
+  padding-top: 7px;
 }
 [type ="button"].btn:hover {
   background-color: #f5773c;
@@ -30,6 +35,8 @@ body {
   width: 100%;
   height: 30px;
   margin-left: 10px;
+  padding-right: 25px;
+  padding-top: 8px;
 }
 
 .all {
