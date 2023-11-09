@@ -1,4 +1,3 @@
-           
 * {
   margin: 0;
   padding: 0;
@@ -20,8 +19,11 @@ body {
   margin-left: 10px;
 }
 [type ="button"].btn:hover {
-  background-color: white;
+  background-color: #f5773c;
   text-decoration: none;
+  color: white;
+  cursor: pointer;
+  transition: all .2s;
 }
 
 .admin img {
@@ -36,14 +38,12 @@ body {
 }
 
 .hero {
-  padding-top: 4rem;
   padding-left: 10rem;
-  
+  padding-top: 7rem;
 }
 
 .box {
   width: 100%;
- 
 }
 
 .hero h1 {
@@ -56,7 +56,7 @@ body {
   width: 100%;
   height: 100px;
   background-color: #f0e81e;
-  margin-bottom: 80px;
+  margin-bottom: 50px;
   border-radius: 30px;
   text-align: center;
   padding-top: 10px;
@@ -91,7 +91,8 @@ body {
   text-align: center;
   padding-top: 6px;
   margin-left: 40px;
-  
+  text-decoration: none;
+ 
 }
 .for img {
   width: 50px;
@@ -105,11 +106,11 @@ body {
   color: #010101;
   cursor: pointer;
 }
+
 .box3 h2 {
   font-size: 1.5rem;
   margin-top: 2;
   text-align: center;
-  text-decoration: none;
   padding-top: 15px;
 }
 .box3 img {
@@ -121,12 +122,12 @@ body {
 .hero2 img {
   width: 40vw;
   height: 60vh;
-  margin-top: 10rem;
-  margin-left: 60%;
+  margin-top: 13rem;
+  margin-left: 50%;
 }
 
 .data {
-  padding-top: 5rem;
+  padding-top: 3rem;
   padding-left: 6rem;
   display: flex;
 }
@@ -139,14 +140,48 @@ body {
   border: 1px solid #010101;
 }
 
-table {
-  border: 1px;
-  background-color: #f0e81e;
+#tabel1 {
+  border: 1px solid #010101;
+  background-color: #ebb840;
+  text-align: center;
+  margin-right: 30px;
+  margin-top: 2rem;
 }
-table td {
-  width: 10%;
+#tabel1 th {
+  border: 5px solid #fff;
   text-align: center;
 }
-table th {
+
+#tabel1 td {
+  border: 5px solid #fff;
+  font-weight: 50px;
+}
+
+#tabel2 {
+  border: 2px solid #010101;
+  margin-left: 20px;
+  margin-right: 50px;
+}
+#tabel2 td {
   text-align: center;
+  border: 2px solid #010101;
+}
+#tabel2 th {
+  text-align: center;
+  background-color: #ebb840;
+  border: 2px solid #010101;
+}
+
+[type = "submit"].btn {
+ margin-left: 31.5rem;
+ margin-top: 2rem;
+}
+
+.judul {
+  padding-top: 4rem ;
+}
+
+.judul h1 {
+  padding-left: 2rem;
+  margin-bottom: 1rem;
 }
