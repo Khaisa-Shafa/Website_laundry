@@ -69,3 +69,11 @@ button:hover {
   text-align: center;
   margin-top: 15px;
 }
+
+.form-control {
+	border-width: 2.3px;
+}
+
+.form-group label {
+	width: 100%;
+}
