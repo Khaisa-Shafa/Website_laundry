@@ -4,7 +4,7 @@
 }
 
 body {
-  font-family: 'Rokkitt', serif;
+  font-family: 'Roboto', sans-serif;
   background-color: var(--bg);
   color: #010101;
 }
@@ -146,6 +146,10 @@ body {
   border: 1px solid #010101;
 }
 
+.laporan {
+  margin-left: 3rem;
+}
+
 #tabel1 {
   border: 1px solid #010101;
   background-color: #ebb840;
@@ -157,7 +161,6 @@ body {
   border: 5px solid #fff;
   text-align: center;
 }
-
 #tabel1 td {
   border: 5px solid #fff;
   font-weight: 50px;
@@ -190,4 +193,21 @@ body {
 .judul h1 {
   padding-left: 2rem;
   margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 425px) {
+ .all .hero .for {
+		width: 90%;
+		margin: 0 auto;
+	}
+}
+
+@media screen and (max-width: 320px) {
+	.all .hero .for {
+		padding: 0;
+	}
+
+	.all .hero .for {
+		padding: 15px;
+	}
 }
