@@ -5,37 +5,54 @@
 . -->
 
 <?php
-  include("../Config/db.php");
+include("../Config/db.php");
 
-// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['inaccount'])) {
     $username = $_POST['name'];
     $password = $_POST['password'];
 
-    // Check if the connection is successful
     if ($conn) {
-        // Prepare the SQL query
         $sql = "SELECT * FROM akunlaundry WHERE username = '$username'";
-
-        // Execute the query
         $result = $conn->query($sql);
 
-        // Check if the query executed successfully
         if ($result) {
             if ($result->num_rows > 0) {
-                // ... rest of your code for password verification
+                $row = $result->fetch_assoc();
+                $hashed_password = $row['password'];
+
+                // Verify the entered password against the hashed password
+                if (password_verify($password, $hashed_password)) {
+                    session_start();
+                    $_SESSION['username'] = $username;
+                    header("Location: ../index.php");
+                    exit();
+                } else {
+                    echo "Incorrect username or password"; // For debugging purposes
+                    // Redirect back to login page after displaying error message
+                    header("Location: masuk.php");
+                    exit();
+                }
             } else {
-                echo "User does not exist";
+                echo "User does not exist"; // For debugging purposes
+                // Redirect back to login page after displaying error message
+                header("Location: masuk.php");
+                exit();
             }
         } else {
-            echo "Error executing the query: " . $conn->error;
+            echo "Error executing the query"; // For debugging purposes
+            // Redirect back to login page after displaying error message
+            header("Location: masuk.php");
+            exit();
         }
     } else {
-        echo "Failed to connect to the database";
+        echo "Failed to connect to the database"; // For debugging purposes
+        // Redirect back to login page after displaying error message
+        header("Location: masuk.php");
+        exit();
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
