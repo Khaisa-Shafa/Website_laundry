@@ -7,6 +7,7 @@
 
 <?php
 include("../Config/db.php");
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -42,37 +43,44 @@ include("../Config/db.php");
 
     <!-- section layanan -->
     <div>
-        <div class="tabel">
-            <table id="tabel1" style="width: 50%;">
-                <?php
-                // Display the table with data
-                echo "<tr><th>No.</th><th>Layanan</th><th>Harga</th><th></th></tr>";
+    <div class="tabel">
+        <table id="tabel1" style="width: 50%;">
+            <?php
+            // Display the table with data
+            echo "<tr><th>No.</th><th>Layanan</th><th>Harga</th><th></th></tr>";
 
-                $sql = "SELECT * FROM layanan";
-                $result = $conn->query($sql);
+            $sql = "SELECT * FROM layanan";
+            $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    $i = 0;
-                    while ($row = $result->fetch_assoc()) {
-                        $i++;
-                        echo "<tr><td>" . $i. "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
-                        echo "<td>";
-                        echo "<form method='post' action=''>";
-                        echo "<input type='submit' class='update' name='update' value='Update'>";
-                        echo "</form>";
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    echo "<tr><td colspan='4'>" . $i . " results</td></tr>";
-                } else {
-                    echo "<tr><td colspan='4'>0 results</td></tr>";
+            if ($result->num_rows > 0) {
+                $i = 0;
+                while ($row = $result->fetch_assoc()) {
+                    $i++;
+                    echo "<tr><td>" . $i. "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
+                    echo "<td>";
+                    echo "<form method='post' action='edit.php'>";
+                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                    echo "<input type='text' name='namalayanan' placeholder='Nama Layanan' required>";
+                    echo "<input type='number' name='harga' placeholder='Harga' required>";
+                    echo "<input type='hidden' name='id' value='some_id_value'>";
+                    echo "<input type='submit' class='update' name='update' value='Update'>";
+                    echo "</form>";
+                    echo "</td>";
+                    echo "</tr>";
                 }
-                // Button for Add functionality
-                echo "<form method='post' action='add.php'>";
-                echo "<input class='tambah' type='submit' name='add' value='Layanan Baru'>";
-                echo "</form>";
-                echo "</table>";
-                ?>
+                echo "<tr><td colspan='4'>" . $i . " results</td></tr>";
+            } else {
+                echo "<tr><td colspan='4'>0 results</td></tr>";
+            }
+            ?>
+               <!-- Form for adding a new service -->
+                <form method="post" action="add.php" class="addform">
+                    <input type="text" name="namalayanan" placeholder="Nama Layanan" required>
+                    <input type="number" name="harga" placeholder="Harga" required>
+                    <input type="hidden" name="id" value="some_id_value">
+                    <input type="submit" name="add" value="Tambah Layanan">
+                </form>
+                </table>
         </div>
     </div>
 </body>

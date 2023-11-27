@@ -4,6 +4,7 @@
 
 <?php
 include("Config/db.php");
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Get form data
@@ -117,34 +118,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <input type="text" id="notelpon" name="notelpon" required><br><br>
           </div>
       <div class="mb-4">
-          <label for="notelpon" class="form-label">Pembayaran:</label>
+          <label for="pembayaran" class="form-label">Pembayaran:</label>
           <input type="text" id="notelpon" name="notelpon" required><br><br>
       </div>
-        <!-- Other fields as needed -->
-        
+      <div class="mb-4">
+          <label for="diskon" class="form-label">Diskon:</label>
+          <input type="number" id="diskon" name="diskon" required><br><br>
+      </div>
           <input type="submit" value="Submit">
         </form>
-        <!-- <label for="formGroupExampleInput" class="form-label">Nama Pelanggan :</label>
-        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nama Lengkap">
-      </div>
-      <div class="mb-4">
-        <label for="formGroupExampleInput2" class="form-label">Tanggal :</label>
-        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="dd/mm/yyyy">
-      </div>
-      <div class="mb-4">
-        <label for="formGroupExampleInput2" class="form-label">Nomor Telpon :</label>
-        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="08xxxxxxxx">
-      </div>
-      <div class="mb-4">
-        <label for="formGroupExampleInput2" class="form-label">Berat(Kg) :</label>
-        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="X">
-      </div>
-      <div class="mb-4">
-        <label for="formGroupExampleInput2" class="form-label"> Pembayaran :</label>
-        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Tunai">
-      </div>
-    </div> -->
-   
+
+
       <div class="tabel1" style="width: 50vw; height: 70vh;">
         <?php
         // Display the table with data

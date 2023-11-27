@@ -1,24 +1,26 @@
 <?php 
 include("../Config/db.php");
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['add'])) {
-    $kode_layanan="";
-    $namalayanan = $_POST['namalayanan'];
-    $harga = $_POST['harga'];
+session_start();
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['namalayanan'], $_POST['harga'])) {
+    // $kode_layanan = $_POST['id'] ?? ''; // If you have an 'id' field in your form
+    $namalayanan = $_POST['namalayanan'] ?? '';
+    $harga = $_POST['harga'] ?? '';
 
-    // Check namalayanan
-    $check_query = "SELECT * FROM layanan WHERE namalayanan = '$namalayanan'";
-    $result = $conn->query($check_query);
-
-    if ($result->num_rows > 0) {
-        echo "Error: Nama layanan sudah digunakan, silahkan ganti ke nama lain";
-    } else {
-        $insert_query = "INSERT INTO layanan (namalayanan, harga) VALUES ('$namalayanan', '$harga')";
+     // Check if 'username' exists in the session
+     if(isset($_SESSION['username'])){
+        $username = $_SESSION['username'];
+        
+        // Now you can use $username in your SQL query
+        $insert_query = "INSERT INTO layanan (namalayanan, harga, username) VALUES ('$namalayanan', '$harga', '$username')";
+        
         if ($conn->query($insert_query) === TRUE) {
             echo "Layanan berhasil ditambahkan!";
             // Redirect or perform any other action after successful insertion
         } else {
             echo "Error: " . $conn->error;
         }
+    } else {
+        echo "Error: Session username not found.";
     }
 }
 ?>
