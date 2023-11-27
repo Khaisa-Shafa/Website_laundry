@@ -107,16 +107,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <form action="submit_data.php" method="POST">
           <label for="namapelanggan" class="form-label">Nama Pelanggan:</label>
           <input type="text" id="namapelanggan" name="nama_pelanggan" required><br><br>
-          
+          </div>
+      <div class="mb-4">
           <label for="tanggal" class="form-label">Tanggal:</label>
           <input type="text" id="tanggal" name="tanggal" required><br><br>
-          
+          </div>
+      <div class="mb-4">
           <label for="notelpon" class="form-label">Nomor Telpon:</label>
           <input type="text" id="notelpon" name="notelpon" required><br><br>
-          
+          </div>
+      <div class="mb-4">
           <label for="notelpon" class="form-label">Pembayaran:</label>
           <input type="text" id="notelpon" name="notelpon" required><br><br>
-        
+      </div>
         <!-- Other fields as needed -->
         
           <input type="submit" value="Submit">
