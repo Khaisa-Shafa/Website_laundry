@@ -196,7 +196,7 @@ body {
   height: 10vh;
 }
 
-[type = "button1"].btn-outline-primary{
+[type = "submit1"].btn-outline-primary{
   margin-top: 1.3rem;
   margin-left: 5rem;
  }

@@ -95,7 +95,13 @@ session_start();
                 echo "</table>";}
                 ?>
         </table>
-        <a href="../export.php" target="_blank" class="btn btn-outline-primary" type="button1">Export To PDF</a>
+        <a href="../export.php" name="export" target="_blank" class="btn btn-outline-primary" type="submit1">Export To PDF</a>
+     <?php 
+      if (isset($_POST['export'])){
+        
+        header("location:export.php");
+      }
+     ?>
       </div>
   </section>
   <!-- laporan end -->
