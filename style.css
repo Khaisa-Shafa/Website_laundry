@@ -150,6 +150,10 @@ body {
   width: 60%;
   border: 1px solid #010101;
 }
+[type = "submit"].btn{
+  margin-left: 31.5rem;
+  margin-top: 2rem;
+ }
 
 #tabel1 {
   border: 1px solid #010101;
@@ -168,10 +172,18 @@ body {
   font-weight: 50px;
 }
 
+/* laporan.php */
+.judul {
+  padding-top: 4rem ;
+}
+.judul h1 {
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+}
+
 #tabel2 {
   border: 2px solid #010101;
-  margin-left: 20px;
-  margin-right: 50px;
+  margin-left: 60px;
 }
 #tabel2 td {
   text-align: center;
@@ -181,18 +193,11 @@ body {
   text-align: center;
   background-color: #ebb840;
   border: 2px solid #010101;
+  height: 10vh;
 }
 
-[type = "submit"].btn {
- margin-left: 31.5rem;
- margin-top: 2rem;
-}
+[type = "button1"].btn-outline-primary{
+  margin-top: 1.3rem;
+  margin-left: 5rem;
+ }
 
-.judul {
-  padding-top: 4rem ;
-}
-
-.judul h1 {
-  padding-left: 2rem;
-  margin-bottom: 1rem;
-}

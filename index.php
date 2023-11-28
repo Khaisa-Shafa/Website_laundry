@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Laundry</title>
-    <link rel="stylesheet" href="Styling/style.css" />
+    <link rel="stylesheet" href="Styling/style2.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rokkitt:ital,wght@0,100;1,400&display=swap" rel="stylesheet">
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 
                 <li class="nav-item">
-                <a href="#data"><button type="button" class="btn">Tambahkan +</button></a>
+                <a href="index.php#data"><button type="button" class="btn">Tambahkan +</button></a>
                 </li>
                 <li class="nav-item">
                 <a class="admin" aria-current="page" href="Layanan/layanan.php"><img src="Styling/user-regular.svg" alt="user"></a>
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <h2>XX</h2>
                     </div>
                 </div>
-                <a href="#laporan"> <div class="for">
+                <a href="Laporan/laporan.php"> <div class="for">
                 <div class="box3">
                 <img src="Styling/file-lines-regular.svg" alt="laporan">
                     <h2>Laporan</h2>
