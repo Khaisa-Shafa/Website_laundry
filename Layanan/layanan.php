@@ -53,8 +53,14 @@ session_start();
                 </tr>
 
                 <?php
-                $sql = "SELECT * FROM layanan";
-                $result = $conn->query($sql);
+                if (isset($_SESSION['username'])) {
+                    $username = $_SESSION['username'];
+                
+                    $sql = "SELECT * FROM layanan WHERE username = ?";
+                    if ($stmt = $conn->prepare($sql)) {
+                        $stmt->bind_param("s", $username);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
                     $i = 0;
@@ -82,6 +88,10 @@ session_start();
                 } else {
                     echo "<tr><td colspan='4'>0 results</td></tr>";
                 }
+                $stmt->close();
+            }else {
+                echo "Error preparing statement" . $conn->error; 
+            }}
                 ?>
                 <tr>
                     <td colspan='4'>

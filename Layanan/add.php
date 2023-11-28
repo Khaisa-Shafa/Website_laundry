@@ -1,24 +1,32 @@
 <?php 
 include("../Config/db.php");
 session_start();
+
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['namalayanan'], $_POST['harga'])) {
-    // $kode_layanan = $_POST['id'] ?? ''; // If you have an 'id' field in your form
     $namalayanan = $_POST['namalayanan'] ?? '';
     $harga = $_POST['harga'] ?? '';
 
-     // Check if 'username' exists in the session
-     if(isset($_SESSION['username'])){
+    if(isset($_SESSION['username'])){
         $username = $_SESSION['username'];
         
-        // Now you can use $username in your SQL query
-        $insert_query = "INSERT INTO layanan (namalayanan, harga, username) VALUES ('$namalayanan', '$harga', '$username')";
+        $insert_query = "INSERT INTO layanan (namalayanan, harga, username) VALUES (?, ?, ?)";
         
-        if ($conn->query($insert_query) === TRUE) {
-            echo "Layanan berhasil ditambahkan!";
-            header("Location: layanan.php");
-            exit();
+        // Prepare and bind the statement
+        if ($stmt = $conn->prepare($insert_query)) {
+            $stmt->bind_param("sss", $namalayanan, $harga, $username);
+            
+            if ($stmt->execute()) {
+                echo "Layanan berhasil ditambahkan!";
+                // Redirect to layanan.php after successful insertion
+                header("Location: layanan.php");
+                exit(); // Ensure that no other output is sent
+            } else {
+                echo "Error: " . $conn->error;
+            }
+            
+            $stmt->close();
         } else {
-            echo "Error: " . $conn->error;
+            echo "Error preparing statement: " . $conn->error;
         }
     } else {
         echo "Error: Session username not found.";
