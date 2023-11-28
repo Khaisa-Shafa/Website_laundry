@@ -6,6 +6,12 @@
 include("Config/db.php");
 session_start();
 
+// Check if the user is not logged in
+if (!isset($_SESSION['username'])) {
+    header("Location: Akun/masuk.php"); // Redirect to login page
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Get form data
   $namaPelanggan = $_POST['nama_pelanggan'];
@@ -132,10 +138,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="tabel1" style="width: 50vw; height: 70vh;">
         <?php
         // Display the table with data
-        echo "<tr><th>No.</th><th>Layanan</th><th>Harga</th><th>Action</th></tr>";
+        echo "<table><tr><th>No.</th><th>Layanan</th><th>Harga</th><th>Action</th></tr>";
 
-        $sql = "SELECT * FROM layanan";
-        $result = $conn->query($sql);
+        if (isset($_SESSION['username'])) {
+            $username = $_SESSION['username'];
+
+        $sql = "SELECT * FROM layanan WHERE username = ?";
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $i = 0;
@@ -153,7 +165,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "<tr><td colspan='4'>0 results</td></tr>";
         }
-        echo "</table>";
+        $stmt ->close();
+    }
+    else {echo "Error preparing statement" . $conn->error; }
+        echo "</table>";}
         ?>
       </div>
      
