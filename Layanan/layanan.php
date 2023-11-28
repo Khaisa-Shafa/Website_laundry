@@ -44,43 +44,55 @@ session_start();
     <!-- section layanan -->
     <div>
     <div class="tabel">
-        <table id="tabel1" style="width: 50%;">
-            <?php
-            // Display the table with data
-            echo "<tr><th>No.</th><th>Layanan</th><th>Harga</th><th></th></tr>";
+            <table id="tabel1" style="width: 50%;">
+                <tr>
+                    <th>No.</th>
+                    <th>Layanan</th>
+                    <th>Harga</th>
+                    <th></th>
+                </tr>
 
-            $sql = "SELECT * FROM layanan";
-            $result = $conn->query($sql);
+                <?php
+                $sql = "SELECT * FROM layanan";
+                $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                $i = 0;
-                while ($row = $result->fetch_assoc()) {
-                    $i++;
-                    echo "<tr><td>" . $i. "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
-                    echo "<td>";
-                    echo "<form method='post' action='edit.php'>";
-                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                    echo "<input type='text' name='namalayanan' placeholder='Nama Layanan' required>";
-                    echo "<input type='number' name='harga' placeholder='Harga' required>";
-                    echo "<input type='hidden' name='id' value='some_id_value'>";
-                    echo "<input type='submit' class='update' name='update' value='Update'>";
-                    echo "</form>";
-                    echo "</td>";
-                    echo "</tr>";
+                if ($result->num_rows > 0) {
+                    $i = 0;
+                    while ($row = $result->fetch_assoc()) {
+                        $i++;
+                        echo "<tr><td>" . $i . "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
+                        echo "<td>";
+                        echo "<form method='post' action='edit.php'>";
+                        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                        echo "<input type='text' name='edited_namalayanan_" . $row['id'] . "' placeholder='Nama Layanan' required>";
+                        echo "<input type='number' name='edited_harga_" . $row['id'] . "' placeholder='Harga' required>";
+                        echo "<input type='submit' class='update' name='update' value='Update'>";
+                        echo "</form>";
+                        // Form for service deletion
+                        
+                        echo "<form method='post' action='delete.php'>";
+                        echo "<input type='hidden' name='delete_id' value='" . $row['id'] . "'>";
+                        echo "<input type='submit' class='delete' name='delete' value='Delete'>";
+                        echo "</form>";
+                    
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                    echo "<tr><td colspan='4'>" . $i . " results</td></tr>";
+                } else {
+                    echo "<tr><td colspan='4'>0 results</td></tr>";
                 }
-                echo "<tr><td colspan='4'>" . $i . " results</td></tr>";
-            } else {
-                echo "<tr><td colspan='4'>0 results</td></tr>";
-            }
-            ?>
-               <!-- Form for adding a new service -->
-                <form method="post" action="add.php" class="addform">
-                    <input type="text" name="namalayanan" placeholder="Nama Layanan" required>
-                    <input type="number" name="harga" placeholder="Harga" required>
-                    <input type="hidden" name="id" value="some_id_value">
-                    <input type="submit" name="add" value="Tambah Layanan">
-                </form>
-                </table>
+                ?>
+                <tr>
+                    <td colspan='4'>
+                        <form method='post' action='add.php' class='addform'>
+                            <input type="text" name="namalayanan" placeholder="Nama Layanan" required>
+                            <input type="number" name="harga" placeholder="Harga" required>
+                            <input type="submit" name="add" value="Tambah Layanan">
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </body>

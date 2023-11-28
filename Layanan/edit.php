@@ -5,13 +5,11 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update'])) {
     // Assuming 'id' is sent from the form
     $kode_layanan = $_POST['id'];
-    $edited_namalayanan = $_POST['edited_namalayanan' . $kode_layanan] ?? '';
-    $edited_harga = $_POST['edited_harga' . $kode_layanan] ?? '';
+    $edited_namalayanan = $_POST['edited_namalayanan_' . $kode_layanan] ?? '';
+    $edited_harga = $_POST['edited_harga_' . $kode_layanan] ?? '';
 
     // Use prepared statements to prevent SQL injection
     $update_query = "UPDATE layanan SET namalayanan = ?, harga = ? WHERE id = ?";
-    
-    $check_query = "SELECT * FROM layanan WHERE namalayanan = ?";
     
     // Prepare and bind
     if ($stmt = $conn->prepare($update_query)) {
@@ -22,7 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update'])) {
             // Check if any rows were affected by the update
             if ($stmt->affected_rows > 0) {
                 echo "Layanan berhasil diubah!";
-                // Redirect or perform any other action after successful update
+                header("Location: layanan.php");
+            exit();
             } else {
                 echo "No rows were affected. Maybe the ID doesn't exist or the data is unchanged.";
             }

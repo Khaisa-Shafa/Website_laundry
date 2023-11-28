@@ -15,7 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['namalayanan'], $_POST
         
         if ($conn->query($insert_query) === TRUE) {
             echo "Layanan berhasil ditambahkan!";
-            // Redirect or perform any other action after successful insertion
+            header("Location: layanan.php");
+            exit();
         } else {
             echo "Error: " . $conn->error;
         }
