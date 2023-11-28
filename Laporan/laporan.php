@@ -90,7 +90,7 @@ if (isset($_SESSION['username'])) {
             <th>Layanan</th>
             <th>Harga</th>
             <th>Kuantitas</th>
-            <th>diskon</th>
+            <th>Diskon</th>
             <th>Total</th>
         </tr>
 
@@ -140,7 +140,9 @@ if (isset($_SESSION['username'])) {
             ?>
       </table>
       <!-- Export button -->
-      <a href="../export.php" name="export" target="_blank" class="btn btn-outline-primary" type="submit1">Export To PDF</a>
+     <!-- Export button -->
+<a href="../export.php?month=<?php echo isset($_GET['month']) ? $_GET['month'] : ''; ?>" class="btn btn-outline-primary" type="submit1">Export To PDF</a>
+
      <?php 
       if (isset($_POST['export'])){
         header("location:export.php");
