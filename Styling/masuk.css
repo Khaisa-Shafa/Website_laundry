@@ -39,7 +39,7 @@ button {
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
-  border: none;
+  border-radius: 20px;
   cursor: pointer;
   width: 100%;
 }
@@ -67,13 +67,8 @@ button:hover {
   color: #010101;
   text-decoration: underline;
   text-align: center;
-  margin-top: 15px;
 }
 
-.form-control {
-	border-width: 2.3px;
-}
-
-.form-group label {
+label {
 	width: 100%;
 }

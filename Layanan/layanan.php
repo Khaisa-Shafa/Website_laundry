@@ -33,7 +33,7 @@ session_start();
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                <a class="admin" aria-current="page" href="Layanan/layanan.php"><img src="../Styling/user-regular.svg" alt="user"></a>
+                <a class="admin" aria-current="page" href="../Layanan/layanan.php"><img src="../Styling/user-regular.svg" alt="user"></a>
                 </li>
             </ul>
         </div>
