@@ -78,7 +78,7 @@ if (isset($_SESSION['username'])) {
       }
       ?>
     </select>
-    <button type="submit" name="submit">Submit</button>
+    <button type="submit3" name="submit" class="btn btn-warning">Submit</button>
   </form>
       <h1>Laporan Pendapatan</h1>
       <table id="tabel2" style="width: 80vw;">
@@ -141,7 +141,7 @@ if (isset($_SESSION['username'])) {
       </table>
       <!-- Export button -->
      <!-- Export button -->
-<a href="../export.php?month=<?php echo isset($_GET['month']) ? $_GET['month'] : ''; ?>" class="btn btn-outline-primary" type="submit1">Export To PDF</a>
+<a href="../export.php?month=<?php echo isset($_GET['month']) ? $_GET['month'] : ''; ?>" class="btn btn-outline-primary" type="submit2">Export To PDF</a>
 
      <?php 
       if (isset($_POST['export'])){

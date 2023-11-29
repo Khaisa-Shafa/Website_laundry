@@ -141,7 +141,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <table id="tabel1">
 <?php
-    echo "<tr><th>No.</th><th>Layanan</th><th>Harga</th><th>Action</th></tr>";
+    echo "<tr>
+            <th>No.</th>
+            <th>Layanan</th>
+            <th>Harga</th>
+            <th>Action</th>
+        </tr>";
 
     if (isset($_SESSION['username'])) {
         $username = $_SESSION['username'];
@@ -164,7 +169,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<button class='kurang' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", -1)'>-</button>";
                     echo "</form></td></tr>";
                 }
-                echo "<tr><td colspan='4'>" . $i . " results</td></tr>";
             } else {
                 echo "<tr><td colspan='4'>0 results</td></tr>";
             }
