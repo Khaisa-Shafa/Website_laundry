@@ -129,12 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="tanggal" class="form-label">Tanggal:</label>
             <input type="text" id="tanggal" name="tanggal" required><br><br>
 
-            <label for="namalayanan" class="form-label">Nama Layanan:</label>
-            <input type="text" id="namalayanan" name="namalayanan" required><br><br>
-
-            <label for="kuantitas" class="form-label">Kuantitas:</label>
-            <input type="number" id="kuantitas" name="kuantitas" required><br><br>
-
             <label for="diskon" class="form-label">Diskon:</label>
             <input type="number" id="diskon" name="diskon" required><br><br>
 
@@ -165,9 +159,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $i++;
                 echo "<tr><td>" . $i . "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
                 echo "<td><form method='post' action=''>";
-                echo "<input type='hidden' name='kode_layanan' value='" . $i . "'>";
-                echo "<input class='tambah' type='submit' name='edit' value='+'>";
-                echo "<input class='kurang' type='submit' name='edit' value='-'>";
+                echo "<input type='hidden' name='kode_layanan' value='" . $i . "'>"; ?>
+                "<button class='tambah' onclick='updateQuantity("<?php echo $row["namalayanan"]; ?>", 1)'>+</button>
+                <button class='kurang' onclick='updateQuantity("<?php echo $row["namalayanan"]; ?>", -1)'>-</button>
+                <?php
                 echo "</form></td>";
                 echo "</tr>";
             }
@@ -190,6 +185,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script src="https://unpkg.com/feather-icons"></script>
     <script>
       feather.replace();
+      // JavaScript section or your external script file
+
+// Initialize an object to store the quantities for each service
+let serviceQuantities = {};
+
+function updateQuantity(serviceName, increment) {
+    // Check if the service name exists in the object, if not, initialize it with a quantity of 0
+    if (!(serviceName in serviceQuantities)) {
+        serviceQuantities[serviceName] = 0;
+    }
+
+    // Update the quantity based on the increment
+    serviceQuantities[serviceName] += increment;
+
+    // Ensure the quantity doesn't go below 0
+    if (serviceQuantities[serviceName] < 0) {
+        serviceQuantities[serviceName] = 0;
+    }
+
+    // Update the displayed quantity (you might have a place to display this on your page)
+    console.log(`Service: ${serviceName}, Quantity: ${serviceQuantities[serviceName]}`);
+}
+
     </script>
     <script src="Script/script.js"></script>
 </body>
