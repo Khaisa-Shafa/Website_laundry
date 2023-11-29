@@ -2,51 +2,46 @@
 . buat submit berfungsi
 . how to stay login selama nggak keluar tab
 . -->
-
 <!-- CATATAN : checkbox kuhapus, ga ada term of condition kita :v 
 terus email juga ga ada, jadi fitur konfirmasi, lupa, reset juga 
 ga bisa... (aku hapus file lupa dan reset juga)-->
-
-
 <?php
 include("../Config/db.php");
-
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
     // Retrieve form data
     $username = $_POST['name'];
     $password = $_POST['password'];
     $password2 = $_POST['password2'];
-
     // Check if passwords match
     if ($password !== $password2) {
         echo "Passwords do not match";
     } else {
-        $sql = "INSERT INTO akunlaundry (username, password) VALUES ('$username', '$password')";
+         // Hash the password
+         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+         $sql = "INSERT INTO akunlaundry (username, password) VALUES ('$username', '$hashed_password')";
     }
 
     if ($conn->query($sql) === TRUE) {
         // Account creation successful, start a session
-        session_start();
-
+        // session_start();
         // Store user information in session variables
-        $_SESSION['username'] = $username;
-
+        // $_SESSION['username'] = $username;
         // Redirect or perform other actions after successful account creation
-        header("Location: ../index.php");
+        header("Location: masuk.php");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Halaman Registrasi</title>
+    <title>Buat Akun</title>
     <link rel="stylesheet" href="../Styling/masuk.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   </head>
-
   <body> 
     <!-- navbar start -->
     <nav class="position-fixed z-1 start-0 end-0 navbar navbar-expand-lg ">
@@ -66,33 +60,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
       </div>
     </nav>
     <!-- navbar end -->
-
     <!-- register start -->
     <form action="" method="post" class="newaccount" novalidate="">
         <div class="container2">
-            <h2>Halaman Registrasi</h2>
-
-            <form action="" method="post">
-                <ul>
-                    <li>
-                        <label for="username">Username :</label>
-                        <input type="text" name="username" id="username">
-                    </li>
-                    <li>
-                        <label for="password">Password :</label>
-                        <input type="password" name="password" id="password">
-                    </li>
-                    <li>
-                        <label for="password2">Konfirmasi password :</label>
-                        <input type="password" name="password2" id="password2">
-                    </li>
-                    <li>
-                        <button type="submit" name="register">Register!</button>
-                    </li>
-                </ul>
-            </form>
+            <h2>Buat akun</h2>
+            <div class="form-group">
+                <label for="name"><b>Nama Laundry</b></label>
+                <input id="name" type="text" class="form-control" name="name" required autofocus placeholder="Masukkan Username">
+            </div>
+            <div class="form-group">
+                <label for="password"><b>Kata sandi</b></label>
+                <input id="password" type="password" class="form-control" name="password" required data-eye placeholder="Kata sandi (terdiri dari huruf dan angka)">
+            </div>
+            <div class="form-group">
+                <label for="password2"><b>Ulangi kata sandi</b></label>
+                <input id="password2" type="password" class="form-control" name="password2" required data-eye placeholder="Masukkan ulang kata sandi">
+            </div>
+                
+            <div class="form-group">
+                <input class="newaccount" type="submit" name="newaccount" value="Buat">
+            </div>
+            
             <div class="mt-4 text-center">
-                Sudah punya akun?<a href="masuk.php">Masuk</a>
+                Sudah punya akun?<a href="masuk.php"> Masuk</a>
             </div>
         </div>
     </form>
