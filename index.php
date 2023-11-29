@@ -1,5 +1,3 @@
-
-
 <?php
 include("Config/db.php");
 session_start();
@@ -52,12 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Laundry</title>
-    <link rel="stylesheet" href="Styling/style2.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style><?php include 'style.css'; ?></style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rokkitt:ital,wght@0,100;1,400&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <!-- ... (your meta tags, CSS, etc.) -->
+   
 </head>
 <body>
 <!-- navbar start -->
@@ -123,29 +122,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Data Pelanggan</h1>
         <!-- Your form for ordering services -->
         <form action="Laporan/laporan.php" method="POST">
-            <label for="nama_pelanggan" class="form-label">Nama Pelanggan:</label>
-            <input type="text" id="nama_pelanggan" name="nama_pelanggan" required><br><br>
+            <label for="nama_pelanggan" class="form-label">Nama Pelanggan :</label>
+            <input type="text" id="nama_pelanggan" name="nama_pelanggan" class="inputan_box" required><br><br>
 
-            <label for="tanggal" class="form-label">Tanggal:</label>
-            <input type="text" id="tanggal" name="tanggal" required><br><br>
+            <label for="tanggal" class="form-label">Tanggal :</label>
+            <input type="text" id="tanggal" name="tanggal" class="inputan_box" required><br><br>
 
-            <label for="diskon" class="form-label">Diskon:</label>
-            <input type="number" id="diskon" name="diskon" required><br><br>
+            <label for="diskon" class="form-label">Diskon :</label>
+            <input type="number" id="diskon" name="diskon" class="inputan_box" required><br><br>
 
-            <label for="pembayaran" class="form-label">Pembayaran:</label>
-            <input type="text" id="pembayaran" name="pembayaran" required><br><br>
+            <label for="pembayaran" class="form-label">Pembayaran :</label>
+            <input type="text" id="pembayaran" name="pembayaran" class="inputan_box" required><br><br>
 
-            <input type="submit" value="Submit">
+            <button type="submit1" name="submit" class="btn btn-primary">Submit</button>
+    </div>      
         </form>
 
-        <!-- Your existing table for layanan -->
-        <div class="tabel1">
-        <?php
-        // Display the table with data
-        echo "<table><tr><th>No.</th><th>Layanan</th><th>Harga</th><th>Action</th></tr>";
 
-        if (isset($_SESSION['username'])) {
-            $username = $_SESSION['username'];
+<table id="tabel1">
+<?php
+    echo "<tr><th>No.</th><th>Layanan</th><th>Harga</th><th>Action</th></tr>";
+
+    if (isset($_SESSION['username'])) {
+        $username = $_SESSION['username'];
 
         $sql = "SELECT * FROM layanan WHERE username = ?";
         if ($stmt = $conn->prepare($sql)) {
@@ -153,32 +152,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
             $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            $i = 0;
-            while ($row = $result->fetch_assoc()) {
-                $i++;
-                echo "<tr><td>" . $i . "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
-                echo "<td><form method='post' action=''>";
-                echo "<input type='hidden' name='kode_layanan' value='" . $i . "'>"; ?>
-                "<button class='tambah' onclick='updateQuantity("<?php echo $row["namalayanan"]; ?>", 1)'>+</button>
-                <button class='kurang' onclick='updateQuantity("<?php echo $row["namalayanan"]; ?>", -1)'>-</button>
-                <?php
-                echo "</form></td>";
-                echo "</tr>";
+            if ($result->num_rows > 0) {
+                $i = 0;
+                while ($row = $result->fetch_assoc()) {
+                    $i++;
+                    echo "<tr><td>" . $i . "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
+                    echo "<td><form method='post' action=''>";
+                    echo "<input type='hidden' name='kode_layanan' value='" . $i . "'>"; 
+
+                    echo "<button class='tambah' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", 1)'>+</button>";
+                    echo "<button class='kurang' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", -1)'>-</button>";
+                    echo "</form></td></tr>";
+                }
+                echo "<tr><td colspan='4'>" . $i . " results</td></tr>";
+            } else {
+                echo "<tr><td colspan='4'>0 results</td></tr>";
             }
-            echo "<tr><td colspan='4'>". $i. "results</td></tr>";
+            $stmt->close();
         } else {
-            echo "<tr><td colspan='4'>0 results</td></tr>";
+            echo "Error preparing statement" . $conn->error;
         }
-        $stmt ->close();
     }
-    else {echo "Error preparing statement" . $conn->error; }
-        echo "</table>";}
-        ?>
-<!-- 
-            </table> -->
-        </div>
-    </div>
+?>
+</table>
+
 </section>
 
 <!-- ... (your JavaScript and other scripts) -->
@@ -211,4 +208,4 @@ function updateQuantity(serviceName, increment) {
     </script>
     <script src="Script/script.js"></script>
 </body>
-</html>
+</html> 

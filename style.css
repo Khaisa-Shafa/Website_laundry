@@ -91,16 +91,17 @@ body {
   line-height: 1.5;
 }
 
+
+/* tombol laporan */
 .for {
   display: flex;
   margin-top: 90px;
   width: 160px;
-  height: 80px;
+  height: 70px;
   background-color: #55b084;
-  border-radius: 30px;
+  border-radius: 25px;
   color: #fff;
   font-size: 15px;
-  text-align: center;
   padding-top: 6px;
   margin-left: 40px;
 }
@@ -108,65 +109,77 @@ body {
   width: 50px;
   height: 55px;
   margin-left: 10px;
-  margin-top: 6px;
+  margin-top: 7px;
 }
 .for:hover {
   transition: all .3s;
   background-color: #f0e81e;
-  color: #010101;
   cursor: pointer;
 }
-
 .box3 h2 {
-  font-size: 1.5rem;
-  margin-top: 2px;
-  text-align: center;
-  padding-top: 15px;
-  text-decoration: none ;
+  color: #010101;
+  text-decoration: none;
+
 }
 .box3 img {
   width: 50px;
   height: 40px;
-  display: flex;
 }
-
 .hero2 img {
   width: 40vw;
   height: 60vh;
-  margin-top: 13rem;
-  margin-left: 50%;
+  margin-top: 12rem;
+  margin-left: 55%;
 }
 
+/* form data pelanggan */
 .data {
   padding-top: 3rem;
-  padding-left: 6rem;
+  padding-left: 5rem;
   display: flex;
 }
 .inputan {
-  width: 70%;
+  margin-right: 10%;
 }
 
+.form-label {
+  display: block;
+  margin-left: 20px;
+  font-weight: 600;
+  font-size: 17px;
+}
+[type = text].inputan_box {
+  margin-left: 20px;
+  width: 100%;
+  border-radius: 7px;
+  height: 6vh;
+}
+[type = number].inputan_box {
+  margin-left: 20px;
+  width: 100%;
+  border-radius: 7px;
+  height: 6vh;  
+}
 [type = "text"].form-control {
-  width: 60%;
+  width: 100%;
   border: 1px solid #010101;
 }
-[type = "submit"].btn{
-  margin-left: 31.5rem;
-  margin-top: 2rem;
- }
+[type = submit1].btn.btn-primary  {
+  margin-left: 1.5rem;
+}
 
 #tabel1 {
   border: 1px solid #010101;
   background-color: #ebb840;
   text-align: center;
-  margin-right: 30px;
-  margin-top: 2rem;
+  margin-top: 4rem;
+  width: 63%;
 }
 #tabel1 th {
   border: 5px solid #fff;
   text-align: center;
+  height: 50px;
 }
-
 #tabel1 td {
   border: 5px solid #fff;
   font-weight: 50px;
@@ -199,5 +212,5 @@ body {
 [type = "submit1"].btn-outline-primary{
   margin-top: 1.3rem;
   margin-left: 5rem;
- }
+}
 
