@@ -10,7 +10,6 @@ body {
 }
 
 /* NAVBAR */
-
 .navbar {
   background-color: #f0e81e;
   margin-top: 0px;
@@ -18,7 +17,7 @@ body {
 .navbar-brand {
   font-weight: 600;
 }
-
+/* button tambahkan di navbar */
 [type ="button"].btn {
   background: #55b084;
   color: #fff;
@@ -33,7 +32,6 @@ body {
   cursor: pointer;
   transition: all .2s;
 }
-
 .admin img {
   width: 100%;
   height: 30px;
@@ -48,21 +46,15 @@ body {
   display: flex;
   flex-direction: row ;
 }
-
 .hero {
-  padding-left: 10rem;
-  padding-top: 7rem;
+  padding-left: 9rem;
+  padding-top: 5rem;
 }
-
 .box {
   width: 100%;
 }
-
 .hero h1 {
-  padding: 1rem 7%;
-  font-size: 2rem;
-  color: #010101;
-  line-height: 1.2;
+ margin-bottom: 20px;
 }
 .hero .box1 {
   width: 100%;

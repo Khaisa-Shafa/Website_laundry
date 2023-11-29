@@ -85,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <section id="home" class="home">
         <div class="all">
             <div class="hero">
+                <h1>Dashboard</h1> 
                 <div class="box">
                     <div class="box1">
                     <h2>Transaksi hari ini</h2>
