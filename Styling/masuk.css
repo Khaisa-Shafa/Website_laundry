@@ -34,17 +34,18 @@ input[type=text], input[type=password] {
   box-sizing: border-box;
 }
 
-button {
+.container2 button {
   background-color: #04AA6D;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border-radius: 20px;
+  padding: 16px;
+  margin: 15px 50px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  width: 100%;
+  width: 70%;
 }
 
-button:hover {
+.container2 button:hover {
   opacity: 0.8;
 }
 

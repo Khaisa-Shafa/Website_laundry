@@ -65,8 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
         <div class="container2">
             <h2>Buat akun</h2>
             <div class="form-group">
-                <label for="name"><b>Nama Laundry</b></label>
-                <input id="name" type="text" class="form-control" name="name" required autofocus placeholder="Masukkan Username">
+                <label for="name"><b>Nama Pengguna</b></label>
+                <input id="name" type="text" class="form-control" name="name" required autofocus placeholder="Masukkan Pengguna">
             </div>
             <div class="form-group">
                 <label for="password"><b>Kata sandi</b></label>
@@ -76,11 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
                 <label for="password2"><b>Ulangi kata sandi</b></label>
                 <input id="password2" type="password" class="form-control" name="password2" required data-eye placeholder="Masukkan ulang kata sandi">
             </div>
-                
-            <div class="form-group">
-                <input class="newaccount" type="submit" name="newaccount" value="Buat">
-            </div>
-            
+            <button class="newaccount" type="submit" name="newaccount" value="Buat">Buat</button>
             <div class="mt-4 text-center">
                 Sudah punya akun?<a href="masuk.php"> Masuk</a>
             </div>

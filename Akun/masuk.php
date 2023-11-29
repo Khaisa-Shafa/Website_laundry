@@ -85,17 +85,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['inaccount'])) {
             <h2>Masuk akun</h2>
 
             <div class="form-group">
-                <label for="name"><b>Nama Laundry</b></label>
-                <input id="name" type="text" class="form-control" name="name" required autofocus placeholder="Masukkan Username">
+                <label for="name"><b>Nama Pengguna</b></label>
+                <input id="name" type="text" class="form-control" name="name" required autofocus placeholder="Masukkan Nama Pengguna">
             </div>
             <div class="form-group">
                 <label for="password"><b>Kata sandi</b></label>
                 <input id="password" type="password" class="form-control" name="password" required data-eye placeholder="Kata sandi (terdiri dari huruf dan angka)">
             </div>
                 
-            <div class="form-group">
-                <input class="inaccount" type="submit" name="inaccount" value="Masuk">
-            </div>
+            <button class="newaccount" type="submit" name="newaccount" value="Masuk">Masuk</button>
             
             <div class="mt-4 text-center">
                 Belum punya akun?<a href="buat.php"> Buat</a>
