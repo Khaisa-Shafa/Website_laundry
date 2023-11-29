@@ -1,6 +1,37 @@
 <?php 
 include("../Config/db.php");
 session_start();
+if (!isset($_SESSION['username'])) {
+  header("Location: Akun/masuk.php");
+  exit();
+}
+
+// Tangkap data yang dikirimkan dari index.php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $namaPelanggan = $_POST['nama_pelanggan'];
+  $tanggal = $_POST['tanggal'];
+  $namaLayanan = $_POST['namalayanan'];
+  $kuantitas = $_POST['kuantitas'];
+  $diskon = $_POST['diskon'];
+  $pembayaran = $_POST['pembayaran'];
+  $username = $_SESSION['username'];
+
+  // Buat query untuk menyimpan data ke dalam tabel pada laporan.php
+  $insertQuery = "INSERT INTO pesanan (tanggal, namapelanggan, namalayanan, harga, kuantitas, diskon, total, pembayaran, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $stmtInsert = $conn->prepare($insertQuery);
+
+  // Bind parameter dan eksekusi query
+  $stmtInsert->bind_param("sssiidiis", $tanggal, $namaPelanggan, $namaLayanan, $harga, $kuantitas, $diskon, $total, $pembayaran, $username);
+  if ($stmtInsert->execute()) {
+      echo "Data inserted successfully";
+  } else {
+      echo "Error inserting data: " . $stmtInsert->error;
+  }
+
+  // Tutup statement dan koneksi ke database
+  $stmtInsert->close();
+  $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
