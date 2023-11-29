@@ -1,42 +1,54 @@
-<!-- TODO LIST
-. membuat tombol2 berfungsi
-. bisa menginputkan pesanan-->
+
 
 <?php
 include("Config/db.php");
 session_start();
 
-// Check if the user is not logged in
 if (!isset($_SESSION['username'])) {
-    header("Location: Akun/masuk.php"); // Redirect to login page
+    header("Location: Akun/masuk.php");
     exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Get form data
-  $namaPelanggan = $_POST['nama_pelanggan'];
-  $tanggal = $_POST['tanggal'];
-  $nomorTelpon = $_POST['nomor_telpon'];
-  $berat = $_POST['berat'];
-  $pembayaran = $_POST['pembayaran'];
+    $namaPelanggan = $_POST['nama_pelanggan'];
+    $tanggal = $_POST['tanggal'];
+    $namaLayanan = $_POST['namalayanan'];
+    $kuantitas = $_POST['kuantitas'];
+    $diskon = $_POST['diskon'];
+    $pembayaran = $_POST['pembayaran'];
+    $username = $_SESSION['username'];
 
-  // SQL query to insert data into the table
-  $sql = "INSERT INTO your_table_name (nama_pelanggan, tanggal, nomor_telpon, berat, pembayaran)
-          VALUES ('$namaPelanggan', '$tanggal', '$nomorTelpon', '$berat', '$pembayaran')";
+    $fetchPriceQuery = "SELECT harga FROM layanan WHERE namalayanan = ?";
+    $stmtPrice = $conn->prepare($fetchPriceQuery);
+    $stmtPrice->bind_param("s", $namaLayanan);
+    $stmtPrice->execute();
+    $result = $stmtPrice->get_result();
 
-  if ($conn->query($sql) === TRUE) {
-      echo "Pesanan telah terekam";
-  } else {
-      echo "Error: " . $sql . "<br>" . $conn->error;
-  }
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $harga = $row['harga'];
+
+        $total = ($harga * $kuantitas) - $diskon;
+
+        $insertQuery = "INSERT INTO pesanan (tanggal, namapelanggan, namalayanan, harga, kuantitas, diskon, total, pembayaran, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmtInsert = $conn->prepare($insertQuery);
+        $stmtInsert->bind_param("sssiidiis", $tanggal, $namaPelanggan, $namaLayanan, $harga, $kuantitas, $diskon, $total, $pembayaran, $username);
+        
+        if ($stmtInsert->execute()) {
+            echo "Data inserted successfully";
+        } else {
+            echo "Error inserting data: " . $stmtInsert->error;
+        }
+    } else {
+        echo "Service not found";
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+<meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Laundry</title>
@@ -45,9 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rokkitt:ital,wght@0,100;1,400&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  </head>
-
-  <body>
+    <!-- ... (your meta tags, CSS, etc.) -->
+</head>
+<body>
 <!-- navbar start -->
 <nav class="position-fixed z-1 start-0 end-0 navbar navbar-expand-lg ">
     <div class="container">
@@ -104,38 +116,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 <!-- home end -->
+<!-- ... (your navbar and other HTML content) -->
 
-    <!-- data start -->
-    <section id="data" class="data">
-      <div class="inputan">
+<section id="data" class="data">
+    <div class="inputan">
         <h1>Data Pelanggan</h1>
-        <div class="mb-4">
-          <!-- make this function to input to database -->
-          <form action="submit_data.php" method="POST">
-          <label for="namapelanggan" class="form-label">Nama Pelanggan:</label>
-          <input type="text" id="namapelanggan" name="nama_pelanggan" required><br><br>
-          </div>
-      <div class="mb-4">
-          <label for="tanggal" class="form-label">Tanggal:</label>
-          <input type="text" id="tanggal" name="tanggal" required><br><br>
-          </div>
-      <div class="mb-4">
-          <label for="notelpon" class="form-label">Nomor Telpon:</label>
-          <input type="text" id="notelpon" name="notelpon" required><br><br>
-          </div>
-      <div class="mb-4">
-          <label for="pembayaran" class="form-label">Pembayaran:</label>
-          <input type="text" id="notelpon" name="notelpon" required><br><br>
-      </div>
-      <div class="mb-4">
-          <label for="diskon" class="form-label">Diskon:</label>
-          <input type="number" id="diskon" name="diskon" required><br><br>
-      </div>
-          <input type="submit" value="Submit">
+        <!-- Your form for ordering services -->
+        <form action="Laporan/laporan.php" method="POST">
+            <label for="nama_pelanggan" class="form-label">Nama Pelanggan:</label>
+            <input type="text" id="nama_pelanggan" name="nama_pelanggan" required><br><br>
+
+            <label for="tanggal" class="form-label">Tanggal:</label>
+            <input type="text" id="tanggal" name="tanggal" required><br><br>
+
+            <label for="diskon" class="form-label">Diskon:</label>
+            <input type="number" id="diskon" name="diskon" required><br><br>
+
+            <label for="pembayaran" class="form-label">Pembayaran:</label>
+            <input type="text" id="pembayaran" name="pembayaran" required><br><br>
+
+            <input type="submit" value="Submit">
         </form>
 
-
-      <div class="tabel1" style="width: 50vw; height: 70vh;">
+        <!-- Your existing table for layanan -->
+        <div class="tabel1">
         <?php
         // Display the table with data
         echo "<table><tr><th>No.</th><th>Layanan</th><th>Harga</th><th>Action</th></tr>";
@@ -155,9 +159,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $i++;
                 echo "<tr><td>" . $i . "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
                 echo "<td><form method='post' action=''>";
-                echo "<input type='hidden' name='kode_layanan' value='" . $i . "'>";
-                echo "<input class='tambah' type='submit' name='edit' value='+'>";
-                echo "<input class='kurang' type='submit' name='edit' value='-'>";
+                echo "<input type='hidden' name='kode_layanan' value='" . $i . "'>"; ?>
+                "<button class='tambah' onclick='updateQuantity("<?php echo $row["namalayanan"]; ?>", 1)'>+</button>
+                <button class='kurang' onclick='updateQuantity("<?php echo $row["namalayanan"]; ?>", -1)'>-</button>
+                <?php
                 echo "</form></td>";
                 echo "</tr>";
             }
@@ -170,15 +175,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else {echo "Error preparing statement" . $conn->error; }
         echo "</table>";}
         ?>
-      </div>
-     
-    
-    </section>
+<!-- 
+            </table> -->
+        </div>
+    </div>
+</section>
 
-    <script src="https://unpkg.com/feather-icons"></script>
+<!-- ... (your JavaScript and other scripts) -->
+<script src="https://unpkg.com/feather-icons"></script>
     <script>
       feather.replace();
+      // JavaScript section or your external script file
+
+// Initialize an object to store the quantities for each service
+let serviceQuantities = {};
+
+function updateQuantity(serviceName, increment) {
+    // Check if the service name exists in the object, if not, initialize it with a quantity of 0
+    if (!(serviceName in serviceQuantities)) {
+        serviceQuantities[serviceName] = 0;
+    }
+
+    // Update the quantity based on the increment
+    serviceQuantities[serviceName] += increment;
+
+    // Ensure the quantity doesn't go below 0
+    if (serviceQuantities[serviceName] < 0) {
+        serviceQuantities[serviceName] = 0;
+    }
+
+    // Update the displayed quantity (you might have a place to display this on your page)
+    console.log(`Service: ${serviceName}, Quantity: ${serviceQuantities[serviceName]}`);
+}
+
     </script>
     <script src="Script/script.js"></script>
-  </body>
+</body>
 </html>
