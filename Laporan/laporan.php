@@ -1,36 +1,30 @@
-<?php 
+<?php
 include("../Config/db.php");
 session_start();
-if (!isset($_SESSION['username'])) {
-  header("Location: Akun/masuk.php");
-  exit();
-}
 
-// Tangkap data yang dikirimkan dari index.php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $namaPelanggan = $_POST['nama_pelanggan'];
-  $tanggal = $_POST['tanggal'];
-  $namaLayanan = $_POST['namalayanan'];
-  $kuantitas = $_POST['kuantitas'];
-  $diskon = $_POST['diskon'];
-  $pembayaran = $_POST['pembayaran'];
-  $username = $_SESSION['username'];
+// Fetch distinct months and years available in the database
+$availableMonths = [];
+if (isset($_SESSION['username'])) {
+    $username = $_SESSION['username'];
 
-  // Buat query untuk menyimpan data ke dalam tabel pada laporan.php
-  $insertQuery = "INSERT INTO pesanan (tanggal, namapelanggan, namalayanan, harga, kuantitas, diskon, total, pembayaran, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  $stmtInsert = $conn->prepare($insertQuery);
+    $sql = "SELECT DISTINCT MONTH(tanggal) AS month, YEAR(tanggal) AS year
+            FROM pesanan 
+            WHERE username = ? 
+            ORDER BY year DESC, month DESC"; // Order by year and month
 
-  // Bind parameter dan eksekusi query
-  $stmtInsert->bind_param("sssiidiis", $tanggal, $namaPelanggan, $namaLayanan, $harga, $kuantitas, $diskon, $total, $pembayaran, $username);
-  if ($stmtInsert->execute()) {
-      echo "Data inserted successfully";
-  } else {
-      echo "Error inserting data: " . $stmtInsert->error;
-  }
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-  // Tutup statement dan koneksi ke database
-  $stmtInsert->close();
-  $conn->close();
+        while ($row = $result->fetch_assoc()) {
+            $monthYear = date("F Y", mktime(0, 0, 0, $row['month'], 1, $row['year']));
+            $availableMonths[] = $monthYear;
+        }
+        $stmt->close();
+    } else {
+        echo "Error preparing statement" . $conn->error;
+    }
 }
 ?>
 
@@ -48,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
-  <!-- navbar start -->
+  <!-- Your navigation bar -->
   <nav class="position-fixed z-1 start-0 end-0 navbar navbar-expand-lg">
     <div class="container">
       <a class="navbar-brand" href="../index.php">LAUNDRY</a>
@@ -69,35 +63,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
   </nav>
-  <!-- navbar end -->
+ 
 
-  <!-- laporan start -->
+  <!-- Your table and other HTML content -->
   <section id="laporan" class="laporan">
     <div class="judul">
+       <!-- Form for selecting month and year -->
+  <form method="GET" action="">
+    <label for="month">Select Month:</label>
+    <select name="month" id="month">
+      <?php
+      foreach ($availableMonths as $month) {
+        echo "<option value='" . date("m Y", strtotime($month)) . "'>" . $month . "</option>";
+      }
+      ?>
+    </select>
+    <button type="submit" name="submit">Submit</button>
+  </form>
       <h1>Laporan Pendapatan</h1>
-        <table id="tabel2" style="width: 80vw; height: 70vh;">
+      <table id="tabel2" style="width: 80vw;">
         <tr>
             <th>No. </th>
             <th>No. Struk</th>
             <th>Tanggal</th>
             <th>Nama Pelanggan</th>
             <th>Layanan</th>
-            <th>kuantitas</th>
+            <th>Harga</th>
+            <th>Kuantitas</th>
+            <th>Diskon</th>
             <th>Total</th>
-          </tr>
+        </tr>
 
         <?php  
-          if (isset($_SESSION['username'])) 
+          if (isset($_SESSION['username']) && isset($_GET['submit']) && isset($_GET['month'])) 
           {
             $username = $_SESSION['username'];
+            $selected_month_year = $_GET['month']; // Format: "MM YYYY"
+            $selected_date = date_create_from_format("m Y", $selected_month_year);
 
-            $sql = "SELECT * FROM pesanan WHERE username = ?";
-            if ($stmt = $conn->prepare($sql)) 
-            {
-              $stmt->bind_param("s", $username);
-              $stmt->execute();
-              $result = $stmt->get_result();
-                  if ($result->num_rows > 0) 
+            if ($selected_date !== false) {
+                $selected_month = date_format($selected_date, "m");
+                $selected_year = date_format($selected_date, "Y");
+  
+                $sql = "SELECT * FROM pesanan WHERE username = ? AND YEAR(tanggal) = ? AND MONTH(tanggal) = ?";
+                if ($stmt = $conn->prepare($sql)) {
+                    $stmt->bind_param("sii", $username, $selected_year, $selected_month);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+              if ($result->num_rows > 0) 
                   {
                     $i = 0;
                     while ($row = $result->fetch_assoc()) 
@@ -110,33 +124,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           <td>" . $row["tanggal"] . "</td>
                           <td>" . $row["namapelanggan"] . "</td>
                           <td>" . $row["namalayanan"] . "</td>
+                          <td>" . $row["harga"] . "</td>
                           <td>" . $row["kuantitas"] . "</td>
+                          <td>" . $row["diskon"] . "</td>
                           <td>" . $row["total"] . "</td>";
-                        echo "<td><form method='post' action=''>";
-                        echo "<input type='hidden' name='kode_layanan' value='" . $i . "'>";
-                        echo "</form></td>";
                         echo "</tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='6'>0 results</td></tr>";
-                }
-                $stmt ->close();
-            }
-            else {echo "Error preparing statement" . $conn->error; }
-                echo "</table>";}
-                ?>
-        </table>
-        <a href="../export.php" name="export" target="_blank" class="btn btn-outline-primary" type="submit1">Export To PDF</a>
+                }  else {
+                echo "<tr><td colspan='9'>0 results</td></tr>";
+              }
+            } else {
+                {echo "Error preparing statement" . $conn->error; }
+                echo "</table>";}}
+            else {echo "Invalid month format!";}}
+            ?>
+      </table>
+      <!-- Export button -->
+     <!-- Export button -->
+<a href="../export.php?month=<?php echo isset($_GET['month']) ? $_GET['month'] : ''; ?>" class="btn btn-outline-primary" type="submit1">Export To PDF</a>
+
      <?php 
       if (isset($_POST['export'])){
-        
         header("location:export.php");
       }
      ?>
-      </div>
+    </div>
   </section>
-  <!-- laporan end -->
 
+  <!-- Your scripts and closing tags -->
   <script src="https://unpkg.com/feather-icons"></script>
   <script>
     feather.replace();

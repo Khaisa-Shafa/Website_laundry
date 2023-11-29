@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Buat Akun</title>
+    <title>Halaman Registrasi</title>
     <link rel="stylesheet" href="../Styling/masuk.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,28 +70,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
     <!-- register start -->
     <form action="" method="post" class="newaccount" novalidate="">
         <div class="container2">
-            <h2>Buat akun</h2>
+            <h2>Halaman Registrasi</h2>
 
-            <div class="form-group">
-                <label for="name"><b>Nama Laundry</b></label>
-                <input id="name" type="text" class="form-control" name="name" required autofocus placeholder="Masukkan Username">
-            </div>
-            <div class="form-group">
-                <label for="password"><b>Kata sandi</b></label>
-                <input id="password" type="password" class="form-control" name="password" required data-eye placeholder="Kata sandi (terdiri dari huruf dan angka)">
-            </div>
-
-            <div class="form-group">
-                <label for="password2"><b>Ulangi kata sandi</b></label>
-                <input id="password2" type="password" class="form-control" name="password2" required data-eye placeholder="Masukkan ulang kata sandi">
-            </div>
-                
-            <div class="form-group">
-                <input class="newaccount" type="submit" name="newaccount" value="Buat">
-            </div>
-            
+            <form action="" method="post">
+                <ul>
+                    <li>
+                        <label for="username">Username :</label>
+                        <input type="text" name="username" id="username">
+                    </li>
+                    <li>
+                        <label for="password">Password :</label>
+                        <input type="password" name="password" id="password">
+                    </li>
+                    <li>
+                        <label for="password2">Konfirmasi password :</label>
+                        <input type="password" name="password2" id="password2">
+                    </li>
+                    <li>
+                        <button type="submit" name="register">Register!</button>
+                    </li>
+                </ul>
+            </form>
             <div class="mt-4 text-center">
-                Sudah punya akun?<a href="masuk.php"> Masuk</a>
+                Sudah punya akun?<a href="masuk.php">Masuk</a>
             </div>
         </div>
     </form>
