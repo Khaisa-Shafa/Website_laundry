@@ -7,7 +7,7 @@
 <?php
 include("../Config/db.php");
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['inaccount'])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newccount'])) {
     $username = $_POST['name'];
     $password = $_POST['password'];
 
@@ -20,33 +20,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['inaccount'])) {
                 $row = $result->fetch_assoc();
                 $hashed_password = $row['password'];
 
-                // Verify the entered password against the hashed password
                 if (password_verify($password, $hashed_password)) {
                     session_start();
                     $_SESSION['username'] = $username;
                     header("Location: ../index.php");
                     exit();
                 } else {
-                    echo "Incorrect username or password"; // For debugging purposes
-                    // Redirect back to login page after displaying error message
+                    echo "Incorrect username or password"; 
                     header("Location: masuk.php");
                     exit();
                 }
             } else {
-                echo "User does not exist"; // For debugging purposes
-                // Redirect back to login page after displaying error message
+                echo "User does not exist"; 
                 header("Location: masuk.php");
                 exit();
             }
         } else {
-            echo "Error executing the query"; // For debugging purposes
-            // Redirect back to login page after displaying error message
+            echo "Error executing the query"; 
             header("Location: masuk.php");
             exit();
         }
     } else {
-        echo "Failed to connect to the database"; // For debugging purposes
-        // Redirect back to login page after displaying error message
+        echo "Failed to connect to the database"; 
         header("Location: masuk.php");
         exit();
     }
