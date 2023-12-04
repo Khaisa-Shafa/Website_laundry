@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_POST['tanggal'], $_POST['namalayanan'], $_POST['kuantitas'], $_POST['diskon'], $_POST['pembayaran'])) {
     $namaPelanggan = $_POST['nama_pelanggan'];
     $tanggal = $_POST['tanggal'];
     $namaLayanan = $_POST['namalayanan'];
@@ -166,8 +166,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<td><form method='post' action=''>";
                     echo "<input type='hidden' name='kode_layanan' value='" . $i . "'>"; 
 
-                    echo "<button class='tambah' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", 1)'>+</button>";
-                    echo "<button class='kurang' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", -1)'>-</button>";
+                    echo "<button type='button' class='tambah' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", 1)'>+</button>";
+                    echo "<button type='button' class='kurang' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", -1)'>-</button>";
+                    
+                    echo "serviceQuantities". $row[""] . "</td>";
                     echo "</form></td></tr>";
                 }
             } else {

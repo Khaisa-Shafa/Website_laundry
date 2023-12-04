@@ -7,7 +7,7 @@
 <?php
 include("../Config/db.php");
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newccount'])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login'])) {
     $username = $_POST['name'];
     $password = $_POST['password'];
 
@@ -18,31 +18,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newccount'])) {
         if ($result) {
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                $hashed_password = $row['password'];
+                $passwordrow = $row['password'];
 
-                if (password_verify($password, $hashed_password)) {
+                if ($password = $passwordrow) {
                     session_start();
                     $_SESSION['username'] = $username;
                     header("Location: ../index.php");
                     exit();
                 } else {
-                    echo "Incorrect username or password"; 
-                    header("Location: masuk.php");
-                    exit();
+                    die ("Incorrect username or password"); 
                 }
             } else {
-                echo "User does not exist"; 
-                header("Location: masuk.php");
-                exit();
+                die("User does not exist"); 
             }
         } else {
             echo "Error executing the query"; 
-            header("Location: masuk.php");
-            exit();
         }
     } else {
         echo "Failed to connect to the database"; 
-        header("Location: masuk.php");
         exit();
     }
 }
@@ -88,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newccount'])) {
                 <input id="password" type="password" class="form-control" name="password" required data-eye placeholder="Kata sandi (terdiri dari huruf dan angka)">
             </div>
                 
-            <button class="newaccount" type="submit" name="newaccount" value="Masuk">Masuk</button>
+            <button class="newaccount" type="submit" name="login" value="Masuk">Masuk</button>
             
             <div class="mt-4 text-center">
                 Belum punya akun?<a href="buat.php"> Buat</a>
