@@ -137,7 +137,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
 
             <button type="submit1" name="submit" class="btn btn-primary">Submit</button>
     </div>      
-        </form>
 
 
 <table id="tabel1">
@@ -165,11 +164,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
                     echo "<tr><td>" . $i . "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
                     echo "<td><form method='post' action=''>";
                     echo "<input type='hidden' name='kode_layanan' value='" . $i . "'>"; 
-
+                    echo "<h2 id=`kuantitas_<?php echo $i; ?> name='kuantitas'></h2>";
                     echo "<button type='button' class='tambah' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", 1)'>+</button>";
                     echo "<button type='button' class='kurang' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", -1)'>-</button>";
-                    
-                    echo "serviceQuantities". $row[""] . "</td>";
                     echo "</form></td></tr>";
                 }
             } else {
@@ -182,6 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
     }
 ?>
 </table>
+</form>
 
 </section>
 
@@ -208,8 +206,9 @@ function updateQuantity(serviceName, increment) {
         serviceQuantities[serviceName] = 0;
     }
 
-    // Update the displayed quantity (you might have a place to display this on your page)
-    console.log(`Service: ${serviceName}, Quantity: ${serviceQuantities[serviceName]}`);
+    // Update the displayed quantity
+    const displayDiv = document.getElementById(`kuantitas_${serviceName}`);
+    displayDiv.textContent = `Quantity: ${serviceQuantities[serviceName]}`;
 }
 
     </script>
