@@ -1,6 +1,7 @@
 <?php
 include("Config/db.php");
 session_start();
+$totalResult = null;
 
 if (!isset($_SESSION['username'])) {
     header("Location: Akun/masuk.php");
@@ -37,7 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
             $stmtInsert->bind_param("sssiidiis", $tanggal, $namaPelanggan, $namalayanan, $harga, $kuantitas, $diskon, $total, $pembayaran, $username);
 
             if ($stmtInsert->execute()) {
-                header("Location: Laporan/laporan.php");
+                $totalSumQuery = "SELECT SUM(total) AS totalSum FROM pesanan WHERE DATE(tanggal) = CURDATE()";
+                $totalResult = $conn->query($totalSumQuery);
             } else {
                 echo "Error inserting data: " . $stmtInsert->error;
             }
@@ -95,32 +97,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
                 <div class="box">
                     <div class="box1">
                     <h2>Transaksi hari ini</h2>
-                        <?php
-                            $sql = "SELECT totalhari FROM profit WHERE DATE(tanggal) = CURDATE()";
-                            $result = $conn->query($sql);
+                    <?php
+                        $totalSumQuery = "SELECT SUM(total) AS totalSum FROM pesanan WHERE DATE(tanggal) = CURDATE() AND username = ?";
+                        $stmtTotal = $conn->prepare($totalSumQuery);
+                        $stmtTotal->bind_param("s", $username);
+                        $stmtTotal->execute();
+                        $totalResult = $stmtTotal->get_result();
+                        
+                        if ($totalResult && $totalResult->num_rows > 0) {
+                            $totalRow = $totalResult->fetch_assoc();
+                            $totalSum = $totalRow['totalSum'];
                             
-                            $data = array();
-                            
-                            if ($result->num_rows > 0) {
-                                while($row = $result->fetch_assoc()) {
-                                    $data[] = $row['totalhari'];
-                                }
-                            } else {
-                                echo "0 results";
-                            }
-                            
-                            echo json_encode($data);
-                            
-                            $conn->close();
-                        ?>
-                        <script>
-                            .then(response => response.json())
-                            .then(data => {
-                                let totalUang = data.reduce((a, b) => a + b, 0);
-                                document.getElementById('total-uang-transaksi-hari-ini').textContent = 'RP ' + totalUang.toFixed(2);
-                            });
-                        </script>
-                        <div id="total-uang-transaksi-hari-ini"></div> 
+                            echo "Rp " . number_format($totalSum, 0);
+                        } else {
+                            echo "Rp 0,000";
+                        }
+                    ?>
                     </div>
 
                     <div class="box2">
@@ -173,11 +165,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
                 if (isset($_SESSION['username'])) {
                     $username = $_SESSION['username'];
 
-                    $sql = "SELECT layanan.*, COALESCE(pesanan.kuantitas, 0) AS kuantitas FROM layanan LEFT JOIN pesanan ON layanan.namalayanan = pesanan.namalayanan AND pesanan.username = ?";
-
+                    $sql = "SELECT layanan.*, COALESCE(pesanan.kuantitas, 0) AS kuantitas 
+                        FROM layanan 
+                        LEFT JOIN pesanan ON layanan.namalayanan = pesanan.namalayanan AND pesanan.username = ?
+                        WHERE layanan.username = ?"; // Assuming there's a 'username' field in the 'layanan' table
 
                     if ($stmt = $conn->prepare($sql)) {
-                        $stmt->bind_param("s", $username);
+                        $stmt->bind_param("ss", $username, $username);
                         $stmt->execute();
                         $result = $stmt->get_result();
 
@@ -209,7 +203,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
                 }
             ?>
             </table>
-            <button type="submit1" name="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
             </form>
     </div>
 
