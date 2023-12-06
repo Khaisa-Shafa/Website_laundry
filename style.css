@@ -51,7 +51,7 @@ body {
   padding-top: 5rem;
 }
 .box {
-  width: 100%;
+  width: 250px;
 }
 .hero h1 {
  margin-bottom: 20px;
@@ -86,9 +86,9 @@ body {
 
 /* tombol laporan */
 .for {
-  display: flex;
+  float: none;
   margin-top: 90px;
-  width: 160px;
+  width: 170px;
   height: 70px;
   background-color: #55b084;
   border-radius: 25px;
@@ -98,23 +98,21 @@ body {
   margin-left: 40px;
 }
 .for img {
-  width: 50px;
+  width: 30px;
   height: 55px;
   margin-left: 10px;
-  margin-top: 7px;
+  float: left;
 }
 .for:hover {
   transition: all .3s;
   background-color: #f0e81e;
   cursor: pointer;
 }
-.for .box3 h2 {
+.for h2 {
   color: #010101;
   text-decoration: none;
   text-align: center;
-}
-.for .box3 img {
-  height: 40px;
+  padding-top: 7px;
 }
 .hero2 img {
   width: 40vw;

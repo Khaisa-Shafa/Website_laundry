@@ -96,24 +96,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
                     <div class="box1">
                     <h2>Transaksi hari ini</h2>
                         <?php
-                        //OPERASI TAMBAH HANYA DI HARI TERSEBUT
+                            $sql = "SELECT totalhari FROM profit WHERE DATE(tanggal) = CURDATE()";
+                            $result = $conn->query($sql);
+                            
+                            $data = array();
+                            
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {
+                                    $data[] = $row['totalhari'];
+                                }
+                            } else {
+                                echo "0 results";
+                            }
+                            
+                            echo json_encode($data);
+                            
+                            $conn->close();
                         ?>
-                        <h2>RP XX.XXX</h2> 
+                        <script>
+                            .then(response => response.json())
+                            .then(data => {
+                                let totalUang = data.reduce((a, b) => a + b, 0);
+                                document.getElementById('total-uang-transaksi-hari-ini').textContent = 'RP ' + totalUang.toFixed(2);
+                            });
+                        </script>
+                        <div id="total-uang-transaksi-hari-ini"></div> 
                     </div>
 
                     <div class="box2">
                         <h2>Total pelanggan hari ini</h2>
                         <?php
-                        //OPERASI TAMBAH HANYA DI HARI TERSEBUT
+                            
                         ?>
                         <h2>XX</h2>
                     </div>
                 </div>
-                <a href="Laporan/laporan.php"> <div class="for">
-                <div class="box3">
-                <img src="Styling/file-lines-regular.svg" alt="laporan">
+                <a href="Laporan/laporan.php">
+                    <div class="for">
+                    <img src="Styling/file-lines-regular.svg" alt="laporan">
                     <h2>Laporan</h2>
-                </div>
                 </a>
             </div>
         </div>
