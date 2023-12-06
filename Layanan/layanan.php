@@ -15,7 +15,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Layanan</title>
     <link rel="stylesheet" href="../Styling/layanan.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,12 +44,12 @@ session_start();
     <!-- section layanan -->
     <div>
     <div class="tabel">
-            <table id="tabel1" style="width: 50%;">
+            <table id="tabel1" style="width: 80%;">
                 <tr>
                     <th>No.</th>
                     <th>Layanan</th>
                     <th>Harga</th>
-                    <th></th>
+                    <th>Update</th>
                 </tr>
 
                 <?php

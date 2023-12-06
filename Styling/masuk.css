@@ -42,7 +42,7 @@ input[type=text], input[type=password] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 70%;
+  width: 30%;
 }
 
 .container2 button:hover {

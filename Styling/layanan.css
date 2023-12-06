@@ -67,8 +67,7 @@
     border: 0cm;
     background-color: #ebb840;
     text-align: center;
-    margin-right: 30px;
-    margin-top: 200px;
+  
   }
   #tabel1 th {
     border: 5px solid #fff;
@@ -84,13 +83,4 @@
   [type = "submit"].btn {
    margin-left: 31.5rem;
    margin-top: 2rem;
-  }
-  
-  .judul {
-    padding-top: 4rem ;
-  }
-  
-  .judul h1 {
-    padding-left: 2rem;
-    margin-bottom: 1rem;
   }
