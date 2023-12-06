@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
 <!-- navbar start -->
 <nav class="position-fixed z-1 start-0 end-0 navbar navbar-expand-lg ">
     <div class="container">
-        <a class="navbar-brand" href="index.php">LAUNDRY</a>
+        <a class="navbar-brand" href="index.php">LAUNDRYKUY</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -171,7 +171,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
                                 echo "<input type='hidden' id='input_kuantitas_" . $row["namalayanan"] . "' name='kuantitas[" . $row["namalayanan"] . "]' value='0'>"; // Use service name dynamically
                                 echo "<button type='button' class='tambah' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", 1)'>+</button>";
                                 echo "<button type='button' class='kurang' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", -1)'>-</button>";
-                                echo "<h2 id='output_kuantitas_" . $row["namalayanan"] . "'>" . ($_POST['kuantitas'][$row["namalayanan"]] ?? 0) . "</h2>";
 
 
 

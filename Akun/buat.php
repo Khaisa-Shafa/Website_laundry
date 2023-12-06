@@ -21,11 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
     }
 
     if ($conn->query($sql) === TRUE) {
-        // Account creation successful, start a session
-        // session_start();
-        // Store user information in session variables
-        // $_SESSION['username'] = $username;
-        // Redirect or perform other actions after successful account creation
         header("Location: masuk.php");
         exit();
     } else {
@@ -51,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
     <!-- navbar start -->
     <nav class="position-fixed z-1 start-0 end-0 navbar navbar-expand-lg ">
       <div class="container">
-            <a class="navbar-brand" href="#">LAUNDRY</a>
+            <a class="navbar-brand" href="#">LAUNDRYKUY</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>

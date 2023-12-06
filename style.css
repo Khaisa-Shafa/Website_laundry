@@ -108,12 +108,12 @@ body {
   background-color: #f0e81e;
   cursor: pointer;
 }
-.box3 h2 {
+.for .box3 h2 {
   color: #010101;
   text-decoration: none;
+  text-align: center;
 }
-.box3 img {
-  width: 50px;
+.for .box3 img {
   height: 40px;
 }
 .hero2 img {
@@ -129,9 +129,11 @@ body {
   padding-left: 5rem;
   display: flex;
   padding-bottom: 2rem;
+  width: 50%;
 }
 .inputan {
   margin-right: 10%;
+  width: 50%;
 }
 
 .form-label {
@@ -176,8 +178,13 @@ button.tambah:hover, button.kurang:hover {
   background-color: #ebb840;
   text-align: center;
   margin-top: 4rem;
-  width: 63%;
+  width: 200%;
 }
+
+#tabel1 tbody {
+  width: 100%;
+}
+
 #tabel1 th {
   border: 5px solid #fff;
   text-align: center;

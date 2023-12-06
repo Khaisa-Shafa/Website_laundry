@@ -45,7 +45,7 @@ if (isset($_SESSION['username'])) {
   <!-- Your navigation bar -->
   <nav class="position-fixed z-1 start-0 end-0 navbar navbar-expand-lg">
     <div class="container">
-      <a class="navbar-brand" href="../index.php">LAUNDRY</a>
+      <a class="navbar-brand" href="../index.php">LAUNDRYKUY</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
