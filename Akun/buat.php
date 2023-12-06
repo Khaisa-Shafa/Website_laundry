@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {
         echo "Passwords do not match";
     } else {
          
-         $sql = "INSERT INTO akunlaundry (username, password) VALUES ('$username', '$hashed_password')";
+         $sql = "INSERT INTO akunlaundry (username, password) VALUES ('$username', '$password')";
     }
 
     if ($conn->query($sql) === TRUE) {
