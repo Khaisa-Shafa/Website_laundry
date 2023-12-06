@@ -118,9 +118,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
                     <div class="box2">
                         <h2>Total pelanggan hari ini</h2>
                         <?php
+                            $totalSumQuery = "SELECT count(idpesanan) AS totalSum FROM pesanan WHERE DATE(tanggal) = CURDATE() AND username = ?";
+                            $stmtTotal = $conn->prepare($totalSumQuery);
+                            $stmtTotal->bind_param("s", $username);
+                            $stmtTotal->execute();
+                            $totalResult = $stmtTotal->get_result();
                             
+                            if ($totalResult && $totalResult->num_rows > 0) {
+                                $totalRow = $totalResult->fetch_assoc();
+                                $totalSum = $totalRow['totalSum'];
+                                
+                                echo number_format($totalSum, 0) . " orang";
+                            } else {
+                                echo "0 orang";
+                            }
                         ?>
-                        <h2>XX</h2>
                     </div>
                 </div>
                 <a href="Laporan/laporan.php">
