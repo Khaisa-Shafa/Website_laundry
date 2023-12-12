@@ -16,6 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
     $pembayaran = $_POST['pembayaran'];
     $username = $_SESSION['username'];
 
+    $serviceQuantities = $_POST['kuantitas'];
+
     // Loop through the serviceQuantities object to get each service's quantity
     foreach ($_POST['kuantitas'] as $namalayanan => $kuantitas) {
         // Use the service name (namalayanan) to fetch the service's price from the database
@@ -38,8 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
             $stmtInsert->bind_param("sssiidiis", $tanggal, $namaPelanggan, $namalayanan, $harga, $kuantitas, $diskon, $total, $pembayaran, $username);
 
             if ($stmtInsert->execute()) {
-                $totalSumQuery = "SELECT SUM(total) AS totalSum FROM pesanan WHERE DATE(tanggal) = CURDATE()";
-                $totalResult = $conn->query($totalSumQuery);
+                
             } else {
                 echo "Error inserting data: " . $stmtInsert->error;
             }
@@ -47,6 +48,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
             echo "Service not found";
         }
     }
+    $totalSumQuery = "SELECT SUM(total) AS totalSum FROM pesanan WHERE DATE(tanggal) = CURDATE() AND username = ?";
+            $stmtTotal = $conn->prepare($totalSumQuery);
+            $stmtTotal->bind_param("s", $username);
+            $stmtTotal->execute();
+        $totalResult = $stmtTotal->get_result();
 }
 
 ?>
@@ -177,42 +183,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
                 if (isset($_SESSION['username'])) {
                     $username = $_SESSION['username'];
 
-                    $sql = "SELECT layanan.*, COALESCE(pesanan.kuantitas, 0) AS kuantitas 
-                        FROM layanan 
-                        LEFT JOIN pesanan ON layanan.namalayanan = pesanan.namalayanan AND pesanan.username = ?
-                        WHERE layanan.username = ?"; // Assuming there's a 'username' field in the 'layanan' table
+                    // Fetch services available for the current user
+                   // Fetch services available for ordering for the current user
+                    $sql = "SELECT layanan.*, pesanan.idpesanan 
+                            FROM layanan 
+                            LEFT JOIN pesanan 
+                            ON layanan.namalayanan = pesanan.namalayanan 
+                            AND pesanan.username = ?
+                            WHERE pesanan.idpesanan IS NULL";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("s", $username); // Bind the username parameter
+                    $stmt->execute();
+                    $result = $stmt->get_result();
 
-                    if ($stmt = $conn->prepare($sql)) {
-                        $stmt->bind_param("ss", $username, $username);
-                        $stmt->execute();
-                        $result = $stmt->get_result();
+                    if ($result->num_rows > 0) {
+                        $i = 0;
+                        while ($row = $result->fetch_assoc()) {
+                            $serviceName = $row["namalayanan"];
+                            $servicePrice = $row["harga"];
 
-                        if ($result->num_rows > 0) {
-                            $i = 0;
-                            while ($row = $result->fetch_assoc()) {
-                                $i++;
-                                echo "<tr><td>" . $i . "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
-                                echo "<td>";
-                                echo "<form method='post' action=''>"; // Opening form tag
-                                echo "<input type='hidden' name='kode_layanan' value='" . $row["namalayanan"] . "'>"; // Use service name as value
-                                echo "<input type='hidden' id='input_kuantitas_" . $row["namalayanan"] . "' name='kuantitas[" . $row["namalayanan"] . "]' value='0'>"; // Use service name dynamically
-                                echo "<button type='button' class='tambah' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", 1)'>+</button>";
-                                echo "<button type='button' class='kurang' onclick='updateQuantity(\"" . $row["namalayanan"] . "\", -1)'>-</button>";
-
-
-
-                                echo "</form>"; // Closing form tag
-                                echo "</td></tr>";
-
-                            }
-                        } else {
-                            echo "<tr><td colspan='4'>0 results</td></tr>";
+                            $i++;
+                            echo "<tr>
+                                    <td>" . $i . "</td>
+                                    <td>" . $serviceName . "</td>
+                                    <td>" . $servicePrice . "</td>
+                                    <td>
+                                        <form method='post' action=''>
+                                            <input type='hidden' name='kode_layanan' value='" . $serviceName . "'>
+                                            <input type='number' id='input_kuantitas_" . $serviceName . "' name='kuantitas[" . $serviceName . "]' value='0' min='0' step='1'>
+                                        </form>
+                                    </td>
+                                </tr>";
                         }
-                        $stmt->close();
                     } else {
-                        echo "Error preparing statement" . $conn->error;
+                        echo "<tr><td colspan='4'>No services available</td></tr>";
                     }
-                }
+
+                    $stmt->close();
+                    } else {
+                    echo "Error preparing statement" . $conn->error;
+                    }
+
+
             ?>
             </table>
             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
