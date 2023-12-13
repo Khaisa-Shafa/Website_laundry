@@ -1,6 +1,6 @@
 <?php 
 require_once("tcpdf/tcpdf.php");
-include("Config/db.php");
+include("Config/laundry_database.sql");
 session_start();
 
 if (isset($_SESSION['username']) && isset($_GET['month'])) {

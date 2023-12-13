@@ -1,5 +1,5 @@
 <?php
-include("Config/db.php");
+include("Config/laundry_database.sql");
 session_start();
 $totalResult = null;
 
