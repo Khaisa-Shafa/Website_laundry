@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
     $serviceQuantities = $_POST['kuantitas'];
 
     // Loop through the serviceQuantities object to get each service's quantity
-    foreach ($_POST['kuantitas'] as $namalayanan => $kuantitas) {
+    foreach ($serviceQuantities as $namalayanan => $kuantitas) {
         // Use the service name (namalayanan) to fetch the service's price from the database
         $fetchPriceQuery = "SELECT harga FROM layanan WHERE namalayanan = ?";
         $stmtPrice = $conn->prepare($fetchPriceQuery);
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
                 echo "Error inserting data: " . $stmtInsert->error;
             }
         } else {
-            echo "Service not found";
+            echo "Service not found for: " . $namalayanan;
         }
     }
     $totalSumQuery = "SELECT SUM(total) AS totalSum FROM pesanan WHERE DATE(tanggal) = CURDATE() AND username = ?";
@@ -171,7 +171,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
 
             <label for="pembayaran" class="form-label">Pembayaran :</label>
             <input type="text" id="pembayaran" name="pembayaran" class="inputan_box" required><br><br>
-            <table id="tabel1">
+            
+            <label for="namalayanan" class="form-label">Nama Layanan :</label>
+            <input type="text" id="namalayanan" name="namalayanan" class="inputan_box" required><br><br>
+            
+            <label for="kuantitas" class="form-label">Pembayaran :</label>
+            <input type="number" id="kuantitas" name="kuantitas[]" class="inputan_box" required><br><br>
+
+
+            <!-- <table id="tabel1">
             <?php
                 echo "<tr>
                         <th>No.</th>
@@ -226,7 +234,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
 
 
             ?>
-            </table>
+            </table> -->
             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
             </form>
     </div>
