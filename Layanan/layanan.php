@@ -1,12 +1,5 @@
-<!-- LIST TODO 
-. fitur hapus belum ada
-. tombol masi error (mungkin karna belum login, tablenya bingung username/laundry siapa)
-. css belum siap pakai
-. ngetes create, read, update, delete API -->
-
-
 <?php
-include("../Config/laundry_database.sql");
+include("../Config/db.php");
 session_start();
 ?>
 

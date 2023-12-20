@@ -1,5 +1,5 @@
 <?php
-include("Config/laundry_database.sql");
+include("Config/db.php");
 session_start();
 $totalResult = null;
 
@@ -9,21 +9,25 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Modify the PHP code to retrieve quantities from the serviceQuantities object
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_POST['tanggal'], $_POST['diskon'], $_POST['pembayaran'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_POST['tanggal'], $_POST['diskon'], $_POST['pembayaran'], $_POST['namalayanan'], $_POST['kuantitas'])) {
     $namaPelanggan = $_POST['nama_pelanggan'];
     $tanggal = $_POST['tanggal'];
     $diskon = $_POST['diskon'];
     $pembayaran = $_POST['pembayaran'];
     $username = $_SESSION['username'];
 
-    $serviceQuantities = $_POST['kuantitas'];
+    $serviceNames = $_POST['namalayanan'];
+    $quantities = $_POST['kuantitas'];
 
-    // Loop through the serviceQuantities object to get each service's quantity
-    foreach ($serviceQuantities as $namalayanan => $kuantitas) {
-        // Use the service name (namalayanan) to fetch the service's price from the database
-        $fetchPriceQuery = "SELECT harga FROM layanan WHERE namalayanan = ?";
+    // Loop through the service names array
+    for ($i = 0; $i < count($serviceNames); $i++) {
+        $serviceName = $serviceNames[$i];
+        $quantity = $quantities[$i];
+
+        // Use the service name to fetch the service's price from the database
+        $fetchPriceQuery = "SELECT * FROM layanan WHERE namalayanan = ?";
         $stmtPrice = $conn->prepare($fetchPriceQuery);
-        $stmtPrice->bind_param("s", $namalayanan);
+        $stmtPrice->bind_param("s", $serviceName);
         $stmtPrice->execute();
         $result = $stmtPrice->get_result();
 
@@ -32,12 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
             $harga = $row['harga'];
 
             // Calculate the total price for this specific service
-            $total = ($harga * $kuantitas) - $diskon;
+            $total = ($harga * $quantity) - $diskon;
+            $stmtInsert->bind_param("sssiidiis", $tanggal, $namaPelanggan, $serviceName, $harga, $quantity, $diskon, $total, $pembayaran, $username);
 
             // Insert the details (including quantity) into the database
             $insertQuery = "INSERT INTO pesanan (tanggal, namapelanggan, namalayanan, harga, kuantitas, diskon, total, pembayaran, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmtInsert = $conn->prepare($insertQuery);
-            $stmtInsert->bind_param("sssiidiis", $tanggal, $namaPelanggan, $namalayanan, $harga, $kuantitas, $diskon, $total, $pembayaran, $username);
 
             if ($stmtInsert->execute()) {
                 
@@ -164,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
             <input type="text" id="nama_pelanggan" name="nama_pelanggan" class="inputan_box" required><br><br>
 
             <label for="tanggal" class="form-label">Tanggal :</label>
-            <input type="text" id="tanggal" name="tanggal" class="inputan_box" required><br><br>
+            <input type="date" id="tanggal" name="tanggal" class="inputan_box" required><br><br>
 
             <label for="diskon" class="form-label">Diskon :</label>
             <input type="number" id="diskon" name="diskon" class="inputan_box" required><br><br>
@@ -172,69 +176,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
             <label for="pembayaran" class="form-label">Pembayaran :</label>
             <input type="text" id="pembayaran" name="pembayaran" class="inputan_box" required><br><br>
             
+
             <label for="namalayanan" class="form-label">Nama Layanan :</label>
-            <input type="text" id="namalayanan" name="namalayanan" class="inputan_box" required><br><br>
-            
-            <label for="kuantitas" class="form-label">Pembayaran :</label>
-            <input type="number" id="kuantitas" name="kuantitas[]" class="inputan_box" required><br><br>
+            <select id="namalayanan" name="namalayanan[]" class="inputan_box" required>
+                <?php
+                $username = $_SESSION['username'];
+                $sql = "SELECT namalayanan FROM layanan WHERE username = ?";
+                $stmt = $conn->prepare($sql);
 
+                if ($stmt) {
+                    $stmt->bind_param("s", $username);
+                    if ($stmt->execute()) {
+                        $result = $stmt->get_result();
 
-            <!-- <table id="tabel1">
-            <?php
-                echo "<tr>
-                        <th>No.</th>
-                        <th>Layanan</th>
-                        <th>Harga</th>
-                        <th>Action</th>
-                    </tr>";
-
-                if (isset($_SESSION['username'])) {
-                    $username = $_SESSION['username'];
-
-                    // Fetch services available for the current user
-                   // Fetch services available for ordering for the current user
-                    $sql = "SELECT layanan.*, pesanan.idpesanan 
-                            FROM layanan 
-                            LEFT JOIN pesanan 
-                            ON layanan.namalayanan = pesanan.namalayanan 
-                            AND pesanan.username = ?
-                            WHERE pesanan.idpesanan IS NULL";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("s", $username); // Bind the username parameter
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-
-                    if ($result->num_rows > 0) {
-                        $i = 0;
-                        while ($row = $result->fetch_assoc()) {
-                            $serviceName = $row["namalayanan"];
-                            $servicePrice = $row["harga"];
-
-                            $i++;
-                            echo "<tr>
-                                    <td>" . $i . "</td>
-                                    <td>" . $serviceName . "</td>
-                                    <td>" . $servicePrice . "</td>
-                                    <td>
-                                        <form method='post' action=''>
-                                            <input type='hidden' name='kode_layanan' value='" . $serviceName . "'>
-                                            <input type='number' id='input_kuantitas_" . $serviceName . "' name='kuantitas[" . $serviceName . "]' value='0' min='0' step='1'>
-                                        </form>
-                                    </td>
-                                </tr>";
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $serviceName = $row["namalayanan"];
+                                echo "<option value='$serviceName'>$serviceName</option>";
+                            }
+                        } else {
+                            echo "<option value='' disabled>No services available</option>";
                         }
                     } else {
-                        echo "<tr><td colspan='4'>No services available</td></tr>";
+                        echo "Error executing statement: " . $stmt->error;
                     }
-
                     $stmt->close();
-                    } else {
-                    echo "Error preparing statement" . $conn->error;
-                    }
+                } else {
+                    echo "Error in preparing statement: " . $conn->error;
+                }
+                ?>
+</select>
 
+            
+            <label for="kuantitas" class="form-label">Kuantitas :</label>
+            <input type="number" id="kuantitas" name="kuantitas[]" class="inputan_box" required><br><br>
 
-            ?>
-            </table> -->
             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
             </form>
     </div>
@@ -243,28 +219,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nama_pelanggan'], $_PO
 
 <!-- ... (your JavaScript and other scripts) -->
 <script src="https://unpkg.com/feather-icons"></script>
-    <script>
-      feather.replace();
-    //   include "Script/script.js"
-let serviceQuantities = {};
-
-function updateQuantity(serviceName, increment) {
-    // Check if the service name exists in the object, if not, initialize it with a quantity of 0
-    if (!(serviceName in serviceQuantities)) {
-        serviceQuantities[serviceName] = 0;
-    }
-
-    // Update the quantity based on the increment
-    serviceQuantities[serviceName] += increment;
-
-    // Ensure the quantity doesn't go below 0
-    if (serviceQuantities[serviceName] < 0) {
-        serviceQuantities[serviceName] = 0;
-    }
-    const quantityInput = document.getElementById(`input_kuantitas_${serviceName}`);
-    quantityInput.value = serviceQuantities[serviceName];
-}
-
-    </script>
     </body>
 </html> 

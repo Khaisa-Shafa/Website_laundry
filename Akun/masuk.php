@@ -1,9 +1,3 @@
-<!-- LIST TODO
-. koneksikan database
-. buat submit berfungsi bisa masuk ke database
-. how to stay login selama nggak keluar tab
-. -->
-
 <?php
 include("../Config/db.php");
 

@@ -1,5 +1,5 @@
 <?php
-include("../Config/laundry_database.sql");
+include("../Config/db.php");
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update'])) {

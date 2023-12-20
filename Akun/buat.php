@@ -1,10 +1,3 @@
-<!-- LIST TODO
-. buat submit berfungsi
-. how to stay login selama nggak keluar tab
-. -->
-<!-- CATATAN : checkbox kuhapus, ga ada term of condition kita :v 
-terus email juga ga ada, jadi fitur konfirmasi, lupa, reset juga 
-ga bisa... (aku hapus file lupa dan reset juga)-->
 <?php
 include("../Config/db.php");
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['newaccount'])) {

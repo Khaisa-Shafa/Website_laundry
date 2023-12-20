@@ -1,6 +1,5 @@
-<!-- PR -->
 <?php
-include("../Config/laundry_database.sql");
+include("../Config/db.php");
 session_start();
 
 // Function to handle service deletion
