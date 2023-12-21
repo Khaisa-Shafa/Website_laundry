@@ -16,6 +16,40 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
+
+<style>
+    .tabel {
+        padding-top: 7rem;
+    }
+
+    .form1, .form2 {
+    display: inline-block;
+    height: 50px;
+    margin-top:20px;
+    }
+    .update {
+        margin-right: 2px;
+        margin-left:2px;
+        background-color: green;
+        color: white;
+        width: 70px;
+        border-radius:5px;
+    }
+    .delete {
+        background: red;
+        color : white;
+        width: 70px;
+        border-radius: 5px;
+    }
+    .addform {
+        height: 40px;
+        margin-top:20px;
+    }
+    .harga {
+        margin-right: 3px;
+        margin-left: 3px;
+    }
+</style>
     <!-- navbar start -->
     <nav class="position-fixed z-1 start-0 end-0 navbar navbar-expand-lg ">
     <div class="container">
@@ -61,15 +95,15 @@ session_start();
                         $i++;
                         echo "<tr><td>" . $i . "</td><td>" . $row["namalayanan"] . "</td><td>" . $row["harga"] . "</td>";
                         echo "<td>";
-                        echo "<form method='post' action='edit.php'>";
+                        echo "<form method='post' class='form1' action='edit.php'>";
                         echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                        echo "<input type='text' name='edited_namalayanan_" . $row['id'] . "' placeholder='Nama Layanan' required>";
-                        echo "<input type='number' name='edited_harga_" . $row['id'] . "' placeholder='Harga' required>";
+                        echo "<input type='text'class='namalayanan' name='edited_namalayanan_" . $row['id'] . "' placeholder='Nama Layanan' required>";
+                        echo "<input type='number' class='harga' name='edited_harga_" . $row['id'] . "' placeholder='Harga' required>";
                         echo "<input type='submit' class='update' name='update' value='Update'>";
                         echo "</form>";
                         // Form for service deletion
                         
-                        echo "<form method='post' action='delete.php'>";
+                        echo "<form method='post' class='form2' action='delete.php'>";
                         echo "<input type='hidden' name='delete_id' value='" . $row['id'] . "'>";
                         echo "<input type='submit' class='delete' name='delete' value='Delete'>";
                         echo "</form>";
@@ -77,7 +111,7 @@ session_start();
                         echo "</td>";
                         echo "</tr>";
                     }
-                    echo "<tr><td colspan='4'>" . $i . " results</td></tr>";
+                    
                 } else {
                     echo "<tr><td colspan='4'>0 results</td></tr>";
                 }
@@ -91,7 +125,7 @@ session_start();
                         <form method='post' action='add.php' class='addform'>
                             <input type="text" name="namalayanan" placeholder="Nama Layanan" required>
                             <input type="number" name="harga" placeholder="Harga" required>
-                            <input type="submit" name="add" value="Tambah Layanan">
+                            <input type="submit" name="add" class='tombol' value="Tambah Layanan">
                         </form>
                     </td>
                 </tr>

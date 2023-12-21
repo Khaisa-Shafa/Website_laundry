@@ -61,26 +61,36 @@
     display: flex;
     justify-content: center; /* Horizontal centering */
     align-items: center;
-  }
-  
-  #tabel1 {
-    border: 0cm;
-    background-color: #ebb840;
-    text-align: center;
-  
-  }
-  #tabel1 th {
-    border: 5px solid #fff;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  #tabel1 td {
-    border: 5px solid #fff;
-    font-weight: 50px;
+    padding-top: 5rem;
   }
   
   [type = "submit"].btn {
    margin-left: 31.5rem;
    margin-top: 2rem;
+  }
+
+  .tabel #tabel1 {
+    border: 1px solid #010101;
+    background-color: #ebb840;
+    text-align: center;
+    margin-top: 4rem;
+    width: 200%;
+    padding-top: 5rem;
+  }
+  
+  #tabel1 tbody {
+    width: 100%;
+  }
+  
+  #tabel1 th {
+    border: 5px solid #fff;
+    text-align: center;
+    height: 10px;
+    font-size: 17px;
+  }
+  #tabel1 td {
+    border: 5px solid #fff;
+    font-weight: 400;
+    font-size: 18px;
+    height: 20px;
   }
